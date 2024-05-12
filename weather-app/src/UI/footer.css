@@ -1,0 +1,11 @@
+footer {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    background-color: #287E8B;
+}
+
+footer p {
+    color: black; 
+    font-size: 16px;
+}
