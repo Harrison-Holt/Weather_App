@@ -3,5 +3,6 @@ main {
     flex-direction: column;
     justify-content: space-around;
     background-color: #085174;
+    min-height: 100vh;
 }
 
