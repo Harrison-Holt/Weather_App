@@ -5,7 +5,7 @@ function Homepage() {
     return (
         <main>
             <section className='current_weather'>
-                <h1>{location}</h1>
+                <h1>location</h1>
             </section>
         </main>
     ); 
