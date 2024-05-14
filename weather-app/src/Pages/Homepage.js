@@ -5,7 +5,7 @@ function Homepage() {
     return (
         <main>
             <section className='current_weather'>
-                <CurrentWeather /> {/* Use the CurrentWeather component */}
+                <CurrentWeather />
             </section>
         </main>
     ); 
