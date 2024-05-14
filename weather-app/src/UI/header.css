@@ -4,3 +4,8 @@ header {
     justify-content: center;
     background-color: #287E8B;
 }
+link {
+    list-style: none;
+    text-decoration: none;
+    color: black; 
+}
