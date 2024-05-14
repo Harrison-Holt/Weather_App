@@ -1,14 +1,14 @@
 import React from 'react'; 
 import './homepage.css'; 
-
+import CurrentWeather from '../Logic/current_weather.js'; 
 function Homepage() {
     return (
         <main>
             <section className='current_weather'>
-                <h1>location</h1>
+                <CurrentWeather /> {/* Use the CurrentWeather component */}
             </section>
         </main>
     ); 
 }; 
 
-export default Homepage; 
+export default Homepage;

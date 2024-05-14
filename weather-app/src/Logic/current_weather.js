@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { geolocated } from 'react-geolocated';
 
-const API_KEY = WEATHER_API_KEY; 
+const API_KEY = process.env.WEATHER_API_KEY;
 
 function CurrentWeather({ coords }) {
   const [weather, setWeather] = useState(null);
