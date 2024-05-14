@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './current_weather.css'; 
 
 const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
@@ -81,37 +82,38 @@ function CurrentWeather() {
   };
 
   return (
-    <div>
+    <div className="weather-container">
       <h1>Current Weather</h1>
-      <form onSubmit={handleCitySubmit}>
+      <form onSubmit={handleCitySubmit} className="weather-form">
         <input
           type="text"
           placeholder="Enter city"
           value={city}
           onChange={handleCityChange}
+          className="weather-input"
         />
-        <button type="submit">Get Weather</button>
+        <button type="submit" className="weather-button">Get Weather</button>
       </form>
-      {error && <div>Error: {error}</div>}
+      {error && <div className="error-message">Error: {error}</div>}
       {weather && (
-        <div>
-          <p>Location: {weather.name}</p>
+        <div className="current-weather">
+          <h2>{weather.name}</h2>
           <p>Temperature: {weather.main.temp}°F</p>
           <p>Weather: {weather.weather[0].description}</p>
         </div>
       )}
       {forecast.length > 0 && (
-        <div>
+        <div className="forecast">
           <h2>10-Day Forecast</h2>
-          <ul>
+          <div className="forecast-cards">
             {forecast.map((day, index) => (
-              <li key={index}>
-                <p>Date: {new Date(day.dt * 1000).toLocaleDateString()}</p>
-                <p>Temperature: {day.temp.day}°F</p>
-                <p>Weather: {day.weather[0].description}</p>
-              </li>
+              <div key={index} className="forecast-card">
+                <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
+                <p>Temp: {day.temp.day}°F</p>
+                <p>{day.weather[0].description}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </div>
