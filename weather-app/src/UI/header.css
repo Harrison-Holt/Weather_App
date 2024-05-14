@@ -1,11 +1,12 @@
 header {
     display: flex; 
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     background-color: #287E8B;
 }
 a {
     list-style: none;
     text-decoration: none;
     color: black; 
+    font-size: 36px;
 }
