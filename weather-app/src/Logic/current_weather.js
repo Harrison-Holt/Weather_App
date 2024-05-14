@@ -29,7 +29,7 @@ function CurrentWeather() {
       const fetchWeather = async () => {
         try {
           const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${WEATHER_API_KEY}&units=imperial`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=imperial&appid=${WEATHER_API_KEY}`
           );
           setWeather(response.data);
         } catch (err) {
@@ -56,7 +56,7 @@ function CurrentWeather() {
     <div>
       <h1>Current Weather</h1>
       <p>Location: {weather.name}</p>
-      <p>Temperature: {weather.main.temp}°C</p>
+      <p>Temperature: {weather.main.temp}°F</p>
       <p>Weather: {weather.weather[0].description}</p>
     </div>
   );
