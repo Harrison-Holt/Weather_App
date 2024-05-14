@@ -5,6 +5,7 @@ const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
 function CurrentWeather() {
   const [weather, setWeather] = useState(null);
+  const [forecast, setForecast] = useState([]);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
@@ -42,27 +43,40 @@ function CurrentWeather() {
 
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
-      const response = await axios.get(
+      const weatherResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`
       );
-      setWeather(response.data);
+      setWeather(weatherResponse.data);
+
+      const forecastResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=imperial&appid=${WEATHER_API_KEY}`
+      );
+      setForecast(forecastResponse.data.list);
       setError(null); // Clear any previous errors
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null); // Clear previous weather data
+      setForecast([]); // Clear previous forecast data
     }
   };
 
   const fetchWeatherByCity = async (cityName) => {
     try {
-      const response = await axios.get(
+      const weatherResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${WEATHER_API_KEY}`
       );
-      setWeather(response.data);
+      setWeather(weatherResponse.data);
+
+      const { lat, lon } = weatherResponse.data.coord;
+      const forecastResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=imperial&appid=${WEATHER_API_KEY}`
+      );
+      setForecast(forecastResponse.data.list);
       setError(null); // Clear any previous errors
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null); // Clear previous weather data
+      setForecast([]); // Clear previous forecast data
     }
   };
 
@@ -79,14 +93,26 @@ function CurrentWeather() {
         <button type="submit">Get Weather</button>
       </form>
       {error && <div>Error: {error}</div>}
-      {weather ? (
+      {weather && (
         <div>
           <p>Location: {weather.name}</p>
           <p>Temperature: {weather.main.temp}°F</p>
           <p>Weather: {weather.weather[0].description}</p>
         </div>
-      ) : (
-        <div>Enter a city to get the weather information.</div>
+      )}
+      {forecast.length > 0 && (
+        <div>
+          <h2>10-Day Forecast</h2>
+          <ul>
+            {forecast.map((day, index) => (
+              <li key={index}>
+                <p>Date: {new Date(day.dt * 1000).toLocaleDateString()}</p>
+                <p>Temperature: {day.temp.day}°F</p>
+                <p>Weather: {day.weather[0].description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );
