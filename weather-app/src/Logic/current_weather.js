@@ -29,7 +29,7 @@ function CurrentWeather() {
       const fetchWeather = async () => {
         try {
           const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${WEATHER_API_KEY}`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${WEATHER_API_KEY}&units=imperial`
           );
           setWeather(response.data);
         } catch (err) {
