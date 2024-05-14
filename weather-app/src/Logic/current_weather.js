@@ -1,20 +1,35 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { geolocated } from 'react-geolocated';
 
-const API_KEY = process.env.WEATHER_API_KEY;
+const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
-function CurrentWeather({ coords }) {
+function CurrentWeather() {
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
+  const [location, setLocation] = useState({ lat: null, lon: null });
 
   useEffect(() => {
-    if (coords) {
-      const { latitude, longitude } = coords;
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ lat: latitude, lon: longitude });
+        },
+        (error) => {
+          setError("Error getting location: " + error.message);
+        }
+      );
+    } else {
+      setError("Geolocation is not available");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (location.lat && location.lon) {
       const fetchWeather = async () => {
         try {
           const response = await axios.get(
-            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`
+            `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.lon}&units=metric&appid=${WEATHER_API_KEY}`
           );
           setWeather(response.data);
         } catch (err) {
@@ -23,9 +38,9 @@ function CurrentWeather({ coords }) {
       };
       fetchWeather();
     }
-  }, [coords]);
+  }, [location]);
 
-  if (!coords) {
+  if (!location.lat || !location.lon) {
     return <div>Getting your location...</div>;
   }
 
@@ -47,9 +62,5 @@ function CurrentWeather({ coords }) {
   );
 }
 
-export default geolocated({
-  positionOptions: {
-    enableHighAccuracy: true,
-  },
-  userDecisionTimeout: 5000,
-})(CurrentWeather);
+export default CurrentWeather;
+
