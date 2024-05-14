@@ -9,4 +9,7 @@ main {
 main h1 {
     text-align: center;
 }
+.current_weather {
+    text-align: center;
+}
 
