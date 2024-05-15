@@ -1,121 +1,134 @@
-/* General Container Styling */
+/* General styling */
+body {
+    font-family: 'Lato', sans-serif; /* Modern font for better readability */
+    color: #333;
+    background-color: #eef1f4;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container for the whole app */
 .weather-container {
-    font-family: 'Arial', sans-serif;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
-    max-width: 800px;
-    margin: auto;
-    background-color: #f0f4f8;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Form Styling */
-  .weather-form {
+    border-radius: 12px;
+    border-top: 5px solid #007bff; /* Accent color */
+}
+
+/* Form styling */
+.weather-form {
     display: flex;
-    justify-content: center;
+    gap: 10px;
     margin-bottom: 20px;
-  }
-  
-  .weather-input {
-    padding: 10px;
+}
+
+.weather-input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
     font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-right: 10px;
-    width: 250px;
-  }
-  
-  .weather-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    color: white;
+    transition: border-color 0.3s;
+}
+
+.weather-input:focus {
+    border-color: #007bff; /* Focus state */
+}
+
+.weather-button {
+    padding: 12px 20px;
     background-color: #007bff;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
+    color: white;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .weather-button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Unit Toggle Button Styling */
-  .unit-toggle-button {
-    padding: 10px 20px;
     font-size: 16px;
-    color: #333;
-    background-color: #e2e6ea;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .unit-toggle-button:hover {
-    background-color: #d1d5d9;
-  }
-  
-  /* Error Message Styling */
-  .error-message {
-    color: red;
+    transition: background-color 0.3s;
+}
+
+.weather-button:hover {
+    background-color: #0056b3;
+}
+
+/* Current weather styling */
+.current-weather {
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  /* Current Weather Styling */
-  .current-weather {
-    text-align: center;
-    margin-bottom: 20px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .current-weather img {
-    width: 100px;
-    height: 100px;
-  }
-  
-  /* Forecast Styling */
-  .hourly-forecast,
-  .forecast {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .hourly-cards,
-  .forecast-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .hourly-card,
-  .forecast-card {
-    background: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 10px;
-    width: 120px;
-    text-align: center;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .hourly-card img,
-  .forecast-card img {
-    width: 50px;
-    height: 50px;
-  }
-  
-  /* Weather Radar Styling */
-  .leaflet-container {
+}
+
+.current-weather img {
+    width: 80px; /* Larger icons */
+    transition: transform 0.3s;
+}
+
+.current-weather img:hover {
+    transform: scale(1.1); /* Icon hover effect */
+}
+
+.current-weather h2 {
+    margin: 10px 0;
+    color: #007bff; /* Theme color for headers */
+}
+
+/* Forecast styling */
+.hourly-forecast,
+.forecast {
     margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
+}
+
+.hourly-cards,
+.forecast-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.hourly-card,
+.forecast-card {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    padding: 10px;
+    text-align: center;
+    border-radius: 8px;
+    transition: box-shadow 0.3s;
+}
+
+.hourly-card:hover,
+.forecast-card:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Shadow effect on hover */
+}
+
+/* Responsive media queries */
+@media (max-width: 768px) {
+    .weather-container {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .weather-form {
+        flex-direction: column;
+    }
+
+    .weather-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-input,
+    .weather-button {
+        font-size: 14px;
+    }
+
+    .current-weather h2,
+    .hourly-card,
+    .forecast-card {
+        font-size: 12px;
+    }
+}
+
   
