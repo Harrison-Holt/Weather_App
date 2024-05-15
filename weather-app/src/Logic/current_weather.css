@@ -43,16 +43,19 @@
     margin-bottom: 20px;
   }
   
+  .hourly-forecast,
   .forecast {
     text-align: center;
   }
   
+  .hourly-cards,
   .forecast-cards {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
   }
   
+  .hourly-card,
   .forecast-card {
     background: #f8f9fa;
     border: 1px solid #dee2e6;
@@ -62,4 +65,5 @@
     width: 100px;
     text-align: center;
   }
+  
   

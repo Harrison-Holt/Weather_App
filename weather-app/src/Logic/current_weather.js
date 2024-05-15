@@ -7,6 +7,7 @@ const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 function CurrentWeather() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
+  const [hourlyForecast, setHourlyForecast] = useState([]);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
@@ -53,11 +54,18 @@ function CurrentWeather() {
         `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=imperial&appid=${WEATHER_API_KEY}`
       );
       setForecast(forecastResponse.data.list);
+
+      const hourlyResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=imperial&appid=${WEATHER_API_KEY}`
+      );
+      setHourlyForecast(hourlyResponse.data.hourly);
+
       setError(null); // Clear any previous errors
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null); // Clear previous weather data
       setForecast([]); // Clear previous forecast data
+      setHourlyForecast([]); // Clear previous hourly forecast data
     }
   };
 
@@ -73,17 +81,24 @@ function CurrentWeather() {
         `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=imperial&appid=${WEATHER_API_KEY}`
       );
       setForecast(forecastResponse.data.list);
+
+      const hourlyResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=imperial&appid=${WEATHER_API_KEY}`
+      );
+      setHourlyForecast(hourlyResponse.data.hourly);
+
       setError(null); // Clear any previous errors
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null); // Clear previous weather data
       setForecast([]); // Clear previous forecast data
+      setHourlyForecast([]); // Clear previous hourly forecast data
     }
   };
 
   return (
     <div className="weather-container">
-      <h1>Current Weather</h1>
+      <h1>Weather App</h1>
       <form onSubmit={handleCitySubmit} className="weather-form">
         <input
           type="text"
@@ -100,6 +115,20 @@ function CurrentWeather() {
           <h2>{weather.name}</h2>
           <p>Temperature: {weather.main.temp}°F</p>
           <p>Weather: {weather.weather[0].description}</p>
+        </div>
+      )}
+      {hourlyForecast.length > 0 && (
+        <div className="hourly-forecast">
+          <h2>24-Hour Forecast</h2>
+          <div className="hourly-cards">
+            {hourlyForecast.slice(0, 24).map((hour, index) => (
+              <div key={index} className="hourly-card">
+                <p>{new Date(hour.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <p>Temp: {hour.temp}°F</p>
+                <p>{hour.weather[0].description}</p>
+              </div>
+            ))}
+          </div>
         </div>
       )}
       {forecast.length > 0 && (
@@ -121,5 +150,6 @@ function CurrentWeather() {
 }
 
 export default CurrentWeather;
+
 
 
