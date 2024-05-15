@@ -40,10 +40,13 @@ function CurrentWeather() {
     setCity(event.target.value);
   };
 
-  const handleCitySubmit = (event) => {
+  function handleCitySubmit(event) {
     event.preventDefault();
-    fetchWeatherByCity(city);
-  };
+    const parts = city.split(','); // Split input by comma
+    const cityName = parts[0].trim(); // Consider only the first part for city name
+    fetchWeatherByCity(cityName);
+}
+
 
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
