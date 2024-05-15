@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import WeatherRadar from './WeatherRadar'; // Import the new component
 import './current_weather.css'; 
 
 const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
@@ -11,6 +12,7 @@ function CurrentWeather() {
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
+  const [units, setUnits] = useState('imperial'); // Default to Fahrenheit
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -32,7 +34,7 @@ function CurrentWeather() {
     if (location.lat && location.lon) {
       fetchWeatherByCoords(location.lat, location.lon);
     }
-  }, [location]);
+  }, [location, units]); // Re-fetch weather data when units change
 
   const handleCityChange = (event) => {
     setCity(event.target.value);
@@ -46,17 +48,17 @@ function CurrentWeather() {
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setWeather(weatherResponse.data);
 
       const forecastResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setForecast(forecastResponse.data.list);
 
       const hourlyResponse = await axios.get(
-        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setHourlyForecast(hourlyResponse.data.list);
 
@@ -72,18 +74,18 @@ function CurrentWeather() {
   const fetchWeatherByCity = async (cityName) => {
     try {
       const weatherResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setWeather(weatherResponse.data);
 
       const { lat, lon } = weatherResponse.data.coord;
       const forecastResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setForecast(forecastResponse.data.list);
 
       const hourlyResponse = await axios.get(
-        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setHourlyForecast(hourlyResponse.data.list);
 
@@ -94,6 +96,10 @@ function CurrentWeather() {
       setForecast([]); // Clear previous forecast data
       setHourlyForecast([]); // Clear previous hourly forecast data
     }
+  };
+
+  const toggleUnits = () => {
+    setUnits(units === 'imperial' ? 'metric' : 'imperial');
   };
 
   const getWeatherIcon = (icon) => `https://openweathermap.org/img/wn/${icon}@2x.png`;
@@ -111,12 +117,15 @@ function CurrentWeather() {
         />
         <button type="submit" className="weather-button">Get Weather</button>
       </form>
+      <button onClick={toggleUnits} className="unit-toggle-button">
+        Toggle Units ({units === 'imperial' ? 'Fahrenheit' : 'Celsius'})
+      </button>
       {error && <div className="error-message">Error: {error}</div>}
       {weather && (
         <div className="current-weather">
           <h2>{weather.name}</h2>
           <img src={getWeatherIcon(weather.weather[0].icon)} alt={weather.weather[0].description} />
-          <p>Temperature: {weather.main.temp}°F</p>
+          <p>Temperature: {weather.main.temp}°{units === 'imperial' ? 'F' : 'C'}</p>
           <p>Weather: {weather.weather[0].description}</p>
         </div>
       )}
@@ -128,7 +137,7 @@ function CurrentWeather() {
               <div key={index} className="hourly-card">
                 <p>{new Date(hour.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 <img src={getWeatherIcon(hour.weather[0].icon)} alt={hour.weather[0].description} />
-                <p>Temp: {hour.main.temp}°F</p>
+                <p>Temp: {hour.main.temp}°{units === 'imperial' ? 'F' : 'C'}</p>
                 <p>{hour.weather[0].description}</p>
               </div>
             ))}
@@ -143,19 +152,19 @@ function CurrentWeather() {
               <div key={index} className="forecast-card">
                 <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
                 <img src={getWeatherIcon(day.weather[0].icon)} alt={day.weather[0].description} />
-                <p>Temp: {day.temp.day}°F</p>
+                <p>Temp: {day.temp.day}°{units === 'imperial' ? 'F' : 'C'}</p>
                 <p>{day.weather[0].description}</p>
               </div>
             ))}
           </div>
         </div>
       )}
+      <WeatherRadar lat={location.lat} lon={location.lon} zoom={6} /> {/* Add the WeatherRadar component */}
     </div>
   );
 }
 
 export default CurrentWeather;
-
 
 
 
