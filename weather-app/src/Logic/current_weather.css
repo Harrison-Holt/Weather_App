@@ -7,15 +7,37 @@ body {
     padding: 0;
 }
 
-/* Container for the whole app */
 .weather-container {
-    max-width: 600px;
-    margin: 20px auto;
+    width: 100%; /* Set width to 100% to stretch across the page */
+    max-width: none; /* Remove the max-width restriction */
+    margin: 20px 0; /* Adjust top and bottom margins, remove side margins */
+    padding: 20px; /* Adjust padding as necessary */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px; /* Optional: adjust border radius for aesthetics */
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    padding: 20px;
-    border-radius: 12px;
-    border-top: 5px solid #007bff; /* Accent color */
+    border-top: 5px solid #007bff; /* Styling accent border */
+}
+
+/* Adjust internal elements for better spacing and alignment */
+.weather-form,
+.current-weather,
+.hourly-forecast,
+.forecast {
+    padding: 0 20px; /* Add padding on the sides for better alignment */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .weather-container {
+        padding: 20px 10px; /* Adjust padding for smaller screens */
+    }
+
+    .weather-form,
+    .current-weather,
+    .hourly-forecast,
+    .forecast {
+        padding: 0 10px; /* Reduce side padding on smaller screens */
+    }
 }
 
 /* Form styling */
