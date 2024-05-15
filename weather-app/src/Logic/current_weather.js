@@ -96,6 +96,8 @@ function CurrentWeather() {
     }
   };
 
+  const getWeatherIcon = (icon) => `https://openweathermap.org/img/wn/${icon}@2x.png`;
+
   return (
     <div className="weather-container">
       <h1>Weather App</h1>
@@ -113,6 +115,7 @@ function CurrentWeather() {
       {weather && (
         <div className="current-weather">
           <h2>{weather.name}</h2>
+          <img src={getWeatherIcon(weather.weather[0].icon)} alt={weather.weather[0].description} />
           <p>Temperature: {weather.main.temp}°F</p>
           <p>Weather: {weather.weather[0].description}</p>
         </div>
@@ -124,6 +127,7 @@ function CurrentWeather() {
             {hourlyForecast.slice(0, 24).map((hour, index) => (
               <div key={index} className="hourly-card">
                 <p>{new Date(hour.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <img src={getWeatherIcon(hour.weather[0].icon)} alt={hour.weather[0].description} />
                 <p>Temp: {hour.main.temp}°F</p>
                 <p>{hour.weather[0].description}</p>
               </div>
@@ -138,6 +142,7 @@ function CurrentWeather() {
             {forecast.map((day, index) => (
               <div key={index} className="forecast-card">
                 <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
+                <img src={getWeatherIcon(day.weather[0].icon)} alt={day.weather[0].description} />
                 <p>Temp: {day.temp.day}°F</p>
                 <p>{day.weather[0].description}</p>
               </div>
