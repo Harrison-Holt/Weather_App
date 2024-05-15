@@ -56,9 +56,9 @@ function CurrentWeather() {
       setForecast(forecastResponse.data.list);
 
       const hourlyResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`
       );
-      setHourlyForecast(hourlyResponse.data.hourly);
+      setHourlyForecast(hourlyResponse.data.list);
 
       setError(null); // Clear any previous errors
     } catch (err) {
@@ -83,9 +83,9 @@ function CurrentWeather() {
       setForecast(forecastResponse.data.list);
 
       const hourlyResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,daily,alerts&units=imperial&appid=${WEATHER_API_KEY}`
+        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=imperial&appid=${WEATHER_API_KEY}`
       );
-      setHourlyForecast(hourlyResponse.data.hourly);
+      setHourlyForecast(hourlyResponse.data.list);
 
       setError(null); // Clear any previous errors
     } catch (err) {
@@ -124,7 +124,7 @@ function CurrentWeather() {
             {hourlyForecast.slice(0, 24).map((hour, index) => (
               <div key={index} className="hourly-card">
                 <p>{new Date(hour.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                <p>Temp: {hour.temp}°F</p>
+                <p>Temp: {hour.main.temp}°F</p>
                 <p>{hour.weather[0].description}</p>
               </div>
             ))}
