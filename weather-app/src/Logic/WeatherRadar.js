@@ -14,3 +14,4 @@ const WeatherRadar = ({ lat, lon, zoom }) => {
 };
 
 export default WeatherRadar;
+

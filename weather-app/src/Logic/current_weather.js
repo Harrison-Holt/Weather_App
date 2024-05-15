@@ -159,7 +159,9 @@ function CurrentWeather() {
           </div>
         </div>
       )}
-      <WeatherRadar lat={location.lat} lon={location.lon} zoom={6} /> {/* Add the WeatherRadar component */}
+      {location.lat && location.lon && ( // Conditional rendering
+        <WeatherRadar lat={location.lat} lon={location.lon} zoom={6} />
+      )}
     </div>
   );
 }
