@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import WeatherRadar from './WeatherRadar'; // Import the new component
-import './current_weather.css'; 
+import WeatherRadar from './WeatherRadar'; // Import the WeatherRadar component
+import './current_weather.css';
 
 const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
@@ -159,7 +159,7 @@ function CurrentWeather() {
           </div>
         </div>
       )}
-      {location.lat && location.lon && ( // Conditional rendering
+      {location.lat && location.lon && (
         <WeatherRadar lat={location.lat} lon={location.lon} zoom={6} />
       )}
     </div>
