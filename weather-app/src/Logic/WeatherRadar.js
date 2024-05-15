@@ -2,6 +2,8 @@ import React from 'react';
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
+const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
+
 const WeatherRadar = ({ lat, lon }) => {
   // Fallback coordinates (e.g., center of the US) if none provided
   const defaultLat = lat || 39.50;
