@@ -10,13 +10,16 @@ const WeatherRadar = ({ lat, lon }) => {
   return (
     <div>
       {lat && lon ? (
-        <MapContainer center={[defaultLat, defaultLon]} zoom={13} style={{ height: '400px', width: '100%' }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          />
-          <Marker position={[defaultLat, defaultLon]}></Marker>
-        </MapContainer>
+       <MapContainer center={[lat, lon]} zoom={13} style={{ height: '400px', width: '100%' }}>
+       <TileLayer
+         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+         attribution='&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+       />
+       <TileLayer
+         url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${apiKey}`}
+         attribution='&copy; <a href="https://openweathermap.org">OpenWeatherMap</a>'
+       />
+     </MapContainer>     
       ) : (
         <p>Map cannot be displayed. Please check your location data.</p>
       )}
@@ -25,5 +28,6 @@ const WeatherRadar = ({ lat, lon }) => {
 };
 
 export default WeatherRadar;
+
 
 
