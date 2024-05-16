@@ -5,11 +5,12 @@ import 'leaflet/dist/leaflet.css';
 const apiKey = process.env.REACT_APP_WEATHER_API_KEY;
 
 const WeatherRadar = ({ lat, lon }) => {
-  const [timestamp, setTimestamp] = useState(Math.floor(Date.now() / 1000));
+  // Ensuring the initial timestamp is rounded down to the nearest 10 minutes
+  const [timestamp, setTimestamp] = useState(Math.floor(Date.now() / 1000 / 600) * 600);
   
-  // Fallback coordinates if none provided
-  const defaultLat = lat || 39.50;
-  const defaultLon = lon || -98.35;
+  useEffect(() => {
+    console.log(`API Key: ${apiKey}`); // Log the API key to ensure it's being loaded
+  }, []);
 
   const updateTimestamp = (amount) => {
     setTimestamp(prevTimestamp => prevTimestamp + amount);
@@ -45,6 +46,7 @@ const WeatherRadar = ({ lat, lon }) => {
 };
 
 export default WeatherRadar;
+
 
 
 
