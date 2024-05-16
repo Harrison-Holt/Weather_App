@@ -4,7 +4,7 @@ import './header.css';
 function Header() {
     return (
         <header>
-            <h1>Weather App</h1>
+            <p>Weather App</p>
             <a href='https://personal-blog-website-kappa.vercel.app/'>Homepage</a>
         </header>
     ); 
