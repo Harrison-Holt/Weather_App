@@ -179,7 +179,6 @@ function CurrentWeather() {
       )}
       {location.lat && location.lon && (
         <>
-          <WeatherRadar lat={location.lat} lon={location.lon} zoom={6} />
           <WeatherMap lat={location.lat} lon={location.lon} />
         </>
       )}
