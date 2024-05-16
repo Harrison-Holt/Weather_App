@@ -5,14 +5,18 @@ header {
     background-color: #287E8B;
 }
 h1 {
-    color: black; 
+    color: #FFFFFF; 
     font-size: 36px;
     padding: 15px; 
 }
 a {
     list-style: none;
     text-decoration: none;
-    color: black; 
+    color: #FFFFFF; 
     font-size: 36px;
-    padding: 15px; 
+    padding: 15px;
+    transition: background-color 0.3 ease; 
+}
+a:hover {
+    background-color: #FFA726;
 }
