@@ -4,9 +4,15 @@ header {
     justify-content: space-around;
     background-color: #287E8B;
 }
+h1 {
+    color: black; 
+    font-size: 36px;
+    padding: 15px; 
+}
 a {
     list-style: none;
     text-decoration: none;
     color: black; 
     font-size: 36px;
+    padding: 15px; 
 }
