@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import WeatherMap from './WeatherMap';
+import WeatherRadar from './WeatherRadar';
 import './current_weather.css';
 
 const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
@@ -179,7 +179,7 @@ function CurrentWeather() {
       )}
       {location.lat && location.lon && (
         <>
-          <WeatherMap lat={location.lat} lon={location.lon} />
+          <WeatherRadar lat={location.lat} lon={location.lon} />
         </>
       )}
       {historicalData && (
