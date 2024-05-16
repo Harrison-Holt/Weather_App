@@ -153,4 +153,23 @@ body {
     }
 }
 
+.controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+  
+  .controls button {
+    margin: 0 5px;
+    padding: 10px;
+    background-color: #287E8B;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .controls button:hover {
+    background-color: #1c5d64;
+  }
+  
   
