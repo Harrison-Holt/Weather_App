@@ -128,10 +128,10 @@ function CurrentWeather() {
   <div className="current-weather">
     <h2>{weather.name}</h2>
     <img src={getWeatherIcon(weather.weather[0].icon)} alt={weather.weather[0].description} />
-    <p>Temperature: {weather.main.temp}°{units === 'imperial' ? 'F' : 'C'}</p>
+    <p>Temperature: {Math.round(weather.main.temp)}°{units === 'imperial' ? 'F' : 'C'}</p>
     <p>Weather: {weather.weather[0].description}</p>
-    <p>Humidity: {weather.main.humidity}%</p> {/* Display humidity */}
-    <p>Pressure: {weather.main.pressure} hPa</p> {/* Display pressure */}
+    <p>Humidity: {Math.round(weather.main.humidity)}%</p> {/* Rounded humidity */}
+    <p>Pressure: {Math.round(weather.main.pressure)} hPa</p> {/* Rounded pressure */}
   </div>
 )}
       {hourlyForecast.length > 0 && (
