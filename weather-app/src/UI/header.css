@@ -4,7 +4,7 @@ header {
     justify-content: space-around;
     background-color: #287E8B;
 }
-p {
+header p {
     color: #FFFFFF; 
     font-size: 36px;
     padding: 15px; 
