@@ -142,7 +142,7 @@ function CurrentWeather() {
               <div key={index} className="hourly-card">
                 <p>{new Date(hour.dt * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
                 <img src={getWeatherIcon(hour.weather[0].icon)} alt={hour.weather[0].description} />
-                <p>Temp: {hour.main.temp}°{units === 'imperial' ? 'F' : 'C'}</p>
+                <p>Temp: {Math.round(hour.main.temp)}°{units === 'imperial' ? 'F' : 'C'}</p>
                 <p>{hour.weather[0].description}</p>
               </div>
             ))}
@@ -157,7 +157,7 @@ function CurrentWeather() {
               <div key={index} className="forecast-card">
                 <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
                 <img src={getWeatherIcon(day.weather[0].icon)} alt={day.weather[0].description} />
-                <p>Temp: {day.temp.day}°{units === 'imperial' ? 'F' : 'C'}</p>
+                <p>Temp: {Math.round(day.temp.day)}°{units === 'imperial' ? 'F' : 'C'}</p>
                 <p>{day.weather[0].description}</p>
               </div>
             ))}
