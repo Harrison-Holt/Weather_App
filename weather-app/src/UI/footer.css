@@ -5,7 +5,6 @@ footer {
     align-items: center;
     background-color: #287E8B;
     padding: 20px; /* Add padding for better spacing */
-    width: 100%; /* Ensure the footer spans the entire width */
     box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
   }
   

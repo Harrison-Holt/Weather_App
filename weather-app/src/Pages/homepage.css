@@ -2,13 +2,13 @@
 main {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center; /* Center items horizontally */
-    background-color: #085174;
-    color: white; /* Ensure text is readable against the dark background */
+    align-items: center;
+    background-color: #f4f4f9;
     min-height: 100vh;
-    padding: 20px; /* Add padding for breathing space */
+    padding: 20px;
+    text-align: center;
   }
+
   
   /* Style the main header */
   main h1 {
