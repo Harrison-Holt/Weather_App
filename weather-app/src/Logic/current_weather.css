@@ -1,4 +1,11 @@
 
+  .weather-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
   .current-weather, .hourly-forecast, .forecast, .historical-data {
     background: #ffffff;
     border-radius: 10px;
@@ -72,6 +79,8 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
+    width: 100%;
+    max-width: 800px;
   }
   
   .weather-input {
