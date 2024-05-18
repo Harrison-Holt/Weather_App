@@ -1,15 +1,4 @@
-body {
-    background-color: #e0f7fa;
-    font-family: 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-  }
-  
-  .weather-container {
+ .weather-container {
     max-width: 800px;
     width: 100%;
     background: #ffffff;

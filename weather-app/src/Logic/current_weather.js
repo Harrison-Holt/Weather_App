@@ -9,7 +9,6 @@ function CurrentWeather() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [hourlyForecast, setHourlyForecast] = useState([]);
-  const [historicalData, setHistoricalData] = useState([]);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
@@ -34,7 +33,6 @@ function CurrentWeather() {
   useEffect(() => {
     if (location.lat && location.lon) {
       fetchWeatherByCoords(location.lat, location.lon);
-      fetchHistoricalData(location.lat, location.lon);
     }
   }, [location, units]);
 
@@ -99,25 +97,6 @@ function CurrentWeather() {
       setWeather(null);
       setForecast([]);
       setHourlyForecast([]);
-    }
-  };
-
-  const fetchHistoricalData = async (lat, lon) => {
-    try {
-      const currentTime = Math.floor(Date.now() / 1000);
-      const historicalDataPromises = [];
-      for (let i = 1; i <= 5; i++) {
-        const pastTime = currentTime - i * 24 * 60 * 60;
-        const historicalResponse = axios.get(
-          `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${pastTime}&units=${units}&appid=${WEATHER_API_KEY}`
-        );
-        historicalDataPromises.push(historicalResponse);
-      }
-      const responses = await Promise.all(historicalDataPromises);
-      const historicalDataArray = responses.map(response => response.data.current);
-      setHistoricalData(historicalDataArray);
-    } catch (err) {
-      setError('Error fetching historical data: ' + err.message);
     }
   };
 
@@ -197,7 +176,6 @@ function CurrentWeather() {
 }
 
 export default CurrentWeather;
-
 
 
 
