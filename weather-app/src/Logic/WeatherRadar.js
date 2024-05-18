@@ -1,72 +1,32 @@
-// src/components/MapViewer.js
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import React, { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { geocode } from 'esri-leaflet-geocoder';
 
-const apiKey = process.env.REACT_APP_WEATHER_API_KEY;;
-const defaultZoom = 7;
+const WeatherRadar = ({ lat, lon, type = 'TA2', date }) => {
+  const mapContainerRef = useRef(null);
 
-function MapViewer() {
-    const [position, setPosition] = useState(null);
+  useEffect(() => {
+    if (lat && lon) {
+      const map = L.map(mapContainerRef.current).setView([lat, lon], 10);
 
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const { latitude, longitude } = pos.coords;
-                setPosition([latitude, longitude]);
-            },
-            () => {
-                // Default to Dallas, TX if geolocation fails
-                setPosition([32.7767, -96.7970]);
-            }
-        );
-    }, []);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
 
-    const updateLocation = (location) => {
-        geocode().text(location).run((err, results) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            setPosition([results.latlng.lat, results.latlng.lng]);
-        });
-    };
+      const weatherLayerUrl = `http://maps.openweathermap.org/maps/2.0/weather/${type}/{z}/{x}/{y}?appid=${process.env.REACT_APP_WEATHER_API_KEY}&opacity=0.5${date ? `&date=${date}` : ''}`;
 
-    return (
-        <div>
-            <input type="text" placeholder="Enter location (e.g., Dallas, TX)" 
-                   onBlur={(e) => updateLocation(e.target.value)} />
-            {position && (
-                <MapContainer center={position} zoom={defaultZoom} style={{ height: '500px' }}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    />
-                    <PrecipitationLayer position={position} />
-                </MapContainer>
-            )}
-        </div>
-    );
-}
+      L.tileLayer(weatherLayerUrl, {
+        attribution: '&copy; OpenWeatherMap'
+      }).addTo(map);
 
-function PrecipitationLayer({ position }) {
-    const map = useMap();
+      return () => map.remove();
+    }
+  }, [lat, lon, type, date]);
 
-    useEffect(() => {
-        const timestamp = Math.floor(Date.now() / 1000);
-        const tileUrl = `https://maps.openweathermap.org/maps/2.0/radar/forecast/${defaultZoom}/${Math.floor(position[1])}/${Math.floor(position[0])}?appid=${apiKey}&tm=${timestamp}`;
-        const layer = L.tileLayer(tileUrl);
-        map.addLayer(layer);
-        return () => {
-            map.removeLayer(layer);
-        };
-    }, [position, map]);
+  return <div ref={mapContainerRef} style={{ width: '100%', height: '400px', marginTop: '20px' }} />;
+};
 
-    return null;
-}
-
-export default MapViewer;
+export default WeatherRadar;
 
 
 
