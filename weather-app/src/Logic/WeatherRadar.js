@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import './WeatherRadar.css';
 
 const weatherLayers = [
   { value: 'PAC0', label: 'Convective precipitation' },
@@ -20,7 +21,7 @@ const weatherLayers = [
   { value: 'CL', label: 'Cloudiness' },
 ];
 
-const WeatherRadar = ({ lat, lon, initialType = 'TA2', date }) => {
+const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
   const mapContainerRef = useRef(null);
   const [type, setType] = useState(initialType);
 
@@ -32,7 +33,7 @@ const WeatherRadar = ({ lat, lon, initialType = 'TA2', date }) => {
         attribution: '&copy; OpenStreetMap contributors'
       }).addTo(map);
 
-      const weatherLayerUrl = `http://maps.openweathermap.org/maps/2.0/weather/${type}/{z}/{x}/{y}?appid=${process.env.REACT_APP_WEATHER_API_KEY}&opacity=0.5${date ? `&date=${date}` : ''}`;
+      const weatherLayerUrl = `http://maps.openweathermap.org/maps/2.0/weather/${type}/{z}/{x}/{y}?appid=${process.env.REACT_APP_WEATHER_API_KEY}&opacity=0.5`;
 
       const weatherLayer = L.tileLayer(weatherLayerUrl, {
         attribution: '&copy; OpenWeatherMap'
@@ -43,11 +44,11 @@ const WeatherRadar = ({ lat, lon, initialType = 'TA2', date }) => {
         weatherLayer.remove();
       };
     }
-  }, [lat, lon, type, date]);
+  }, [lat, lon, type]);
 
   return (
-    <div style={{ width: '100%', height: '100%' }}>
-      <div style={{ position: 'absolute', zIndex: 1000, padding: '10px' }}>
+    <div className="map-container">
+      <div className="map-layer-select">
         <label htmlFor="layerType">Select Layer: </label>
         <select
           id="layerType"
@@ -61,7 +62,7 @@ const WeatherRadar = ({ lat, lon, initialType = 'TA2', date }) => {
           ))}
         </select>
       </div>
-      <div ref={mapContainerRef} style={{ width: '100%', height: '400px', marginTop: '20px' }} />
+      <div ref={mapContainerRef} style={{ width: '100%', height: '100%' }} />
     </div>
   );
 };
