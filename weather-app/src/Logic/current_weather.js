@@ -15,6 +15,7 @@ function CurrentWeather() {
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
   const [units, setUnits] = useState('imperial');
+  const [layerType, setLayerType] = useState('TA2');
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -43,12 +44,12 @@ function CurrentWeather() {
     setCity(event.target.value);
   };
 
-  function handleCitySubmit(event) {
+  const handleCitySubmit = (event) => {
     event.preventDefault();
     const parts = city.split(',');
     const cityName = parts[0].trim();
     fetchWeatherByCity(cityName);
-  }
+  };
 
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
@@ -84,19 +85,7 @@ function CurrentWeather() {
       setWeather(weatherResponse.data);
 
       const { lat, lon } = weatherResponse.data.coord;
-      const forecastResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`
-      );
-      setForecast(forecastResponse.data.list);
-
-      const hourlyResponse = await axios.get(
-        `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
-      );
-      setHourlyForecast(hourlyResponse.data.list);
-
-      fetchHistoricalData(lat, lon);
-
-      setError(null);
+      fetchWeatherByCoords(lat, lon);
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null);
@@ -195,7 +184,7 @@ function CurrentWeather() {
         </div>
       )}
       {location.lat && location.lon && (
-        <WeatherRadar lat={location.lat} lon={location.lon} initialType='TA2' date={date} />
+        <WeatherRadar lat={location.lat} lon={location.lon} initialType={layerType} />
       )}
       <button onClick={handleToggleHistoricalData} className="unit-toggle-button">
         {showHistoricalData ? 'Hide Historical Data' : 'Show Historical Data'}
