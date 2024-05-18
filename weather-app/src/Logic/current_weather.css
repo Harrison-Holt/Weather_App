@@ -1,4 +1,4 @@
- .weather-container {
+.weather-container {
     max-width: 800px;
     width: 100%;
     background: #ffffff;
@@ -6,9 +6,10 @@
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     padding: 20px;
-    margin: 20px;
+    margin: 20px auto; /* Center the container horizontally */
     display: flex; 
-    justify-content: center;
+    flex-direction: column; /* Ensure vertical layout */
+    align-items: center; /* Center the content horizontally */
   }
   
   h1 {
@@ -96,6 +97,7 @@
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    width: 100%;
   }
   
   .current-weather h2, .hourly-forecast h2, .forecast h2, .historical-data h2 {
@@ -166,3 +168,4 @@
       width: 120px;
     }
   }
+  
