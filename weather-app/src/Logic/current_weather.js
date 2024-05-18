@@ -57,6 +57,7 @@ function CurrentWeather() {
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setWeather(weatherResponse.data);
+      setLocation({ lat, lon });
 
       const forecastResponse = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`
