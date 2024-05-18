@@ -1,23 +1,69 @@
-.weather-container {
-    max-width: 800px;
-    width: 100%;
+
+  .current-weather, .hourly-forecast, .forecast, .historical-data {
     background: #ffffff;
-    border-radius: 15px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+    border-radius: 10px;
     padding: 20px;
-    margin: 20px auto; /* Center the container horizontally */
-    display: flex; 
-    flex-direction: column; /* Ensure vertical layout */
-    align-items: center; /* Center the content horizontally */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    width: 80%;
+    max-width: 800px; /* Constrain the width */
   }
   
-  h1 {
-    color: black;
-    padding: 20px 0;
+  .current-weather h2, .hourly-forecast h2, .forecast h2, .historical-data h2 {
     text-align: center;
-    margin: -20px -20px 20px -20px;
-    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .hourly-cards, .forecast-cards, .historical-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+  
+  .hourly-card, .forecast-card, .historical-card {
+    background: #e0f7fa;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    text-align: center;
+    width: 100px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .hourly-card:hover, .forecast-card:hover, .historical-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .hourly-card img, .forecast-card img {
+    display: block;
+    margin: 0 auto 5px auto;
+  }
+  
+  .historical-card {
+    width: calc(33.33% - 20px);
+  }
+  
+  @media (max-width: 768px) {
+    .historical-card {
+      width: calc(50% - 20px);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .historical-card {
+      width: 100%;
+    }
+  
+    .weather-input {
+      width: calc(100% - 130px);
+    }
+  
+    .weather-button {
+      width: 120px;
+    }
   }
   
   .weather-form {
@@ -88,83 +134,5 @@
     color: red;
     text-align: center;
     margin-bottom: 20px;
-  }
-  
-  .current-weather, .hourly-forecast, .forecast, .historical-data {
-    background: #f4f4f9;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    width: 100%;
-  }
-  
-  .current-weather h2, .hourly-forecast h2, .forecast h2, .historical-data h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
-  
-  .current-weather img {
-    display: block;
-    margin: 0 auto 10px auto;
-  }
-  
-  .current-weather p {
-    font-size: 16px;
-    color: #555;
-    text-align: center;
-    margin: 5px 0;
-  }
-  
-  .hourly-cards, .forecast-cards, .historical-cards {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
-  .hourly-card, .forecast-card, .historical-card {
-    background: #e0f7fa;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 10px;
-    text-align: center;
-    width: 100px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .hourly-card:hover, .forecast-card:hover, .historical-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .hourly-card img, .forecast-card img {
-    display: block;
-    margin: 0 auto 5px auto;
-  }
-  
-  .historical-card {
-    width: calc(33.33% - 20px);
-  }
-  
-  @media (max-width: 768px) {
-    .historical-card {
-      width: calc(50% - 20px);
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .historical-card {
-      width: 100%;
-    }
-  
-    .weather-input {
-      width: calc(100% - 130px);
-    }
-  
-    .weather-button {
-      width: 120px;
-    }
   }
   

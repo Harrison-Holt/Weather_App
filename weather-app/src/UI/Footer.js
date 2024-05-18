@@ -1,12 +1,10 @@
-import React from 'react'; 
-import './footer.css'; 
+import React from 'react';
+import './footer.css';
 
-function Footer() {
-    return (
-        <footer>
-            <p>May 12, 2024</p>
-        </footer>
-    ); 
-}; 
+const Footer = () => (
+  <footer>
+    <p>&copy; 2024 My Weather App. All rights reserved.</p>
+  </footer>
+);
 
-export default Footer; 
+export default Footer;

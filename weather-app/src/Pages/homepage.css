@@ -1,15 +1,21 @@
+/* Ensure the entire main section covers the viewport height and centers content */
 main {
-    display: flex; 
+    display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
+    align-items: center; /* Center items horizontally */
     background-color: #085174;
+    color: white; /* Ensure text is readable against the dark background */
     min-height: 100vh;
-}
-
-main h1 {
+    padding: 20px; /* Add padding for breathing space */
+  }
+  
+  /* Style the main header */
+  main h1 {
     text-align: center;
-}
-.current_weather {
-    text-align: center;
-}
+    font-size: 3rem; /* Make the header larger */
+    margin: 0 0 20px 0; /* Add space below the header */
+    color: #ffffff;
+    font-family: 'Arial', sans-serif; /* Change font for better readability */
+  }
 
