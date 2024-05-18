@@ -9,7 +9,7 @@ function CurrentWeather() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [hourlyForecast, setHourlyForecast] = useState([]);
-  const [historicalData, setHistoricalData] = useState(null);
+  const [historicalData, setHistoricalData] = useState([]);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
@@ -105,10 +105,17 @@ function CurrentWeather() {
   const fetchHistoricalData = async (lat, lon) => {
     try {
       const currentTime = Math.floor(Date.now() / 1000);
-      const historicalResponse = await axios.get(
-        `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${currentTime}&units=${units}&appid=${WEATHER_API_KEY}`
-      );
-      setHistoricalData(historicalResponse.data);
+      const historicalDataPromises = [];
+      for (let i = 1; i <= 5; i++) {
+        const pastTime = currentTime - i * 24 * 60 * 60;
+        const historicalResponse = axios.get(
+          `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${pastTime}&units=${units}&appid=${WEATHER_API_KEY}`
+        );
+        historicalDataPromises.push(historicalResponse);
+      }
+      const responses = await Promise.all(historicalDataPromises);
+      const historicalDataArray = responses.map(response => response.data.current);
+      setHistoricalData(historicalDataArray);
     } catch (err) {
       setError('Error fetching historical data: ' + err.message);
     }
@@ -145,6 +152,9 @@ function CurrentWeather() {
           <p>Weather: {weather.weather[0].description}</p>
           <p>Humidity: {Math.round(weather.main.humidity)}%</p>
           <p>Pressure: {Math.round(weather.main.pressure)} hPa</p>
+          <p>Wind Speed: {Math.round(weather.wind.speed)} {units === 'imperial' ? 'mph' : 'm/s'}</p>
+          <p>Sunrise: {new Date(weather.sys.sunrise * 1000).toLocaleTimeString()}</p>
+          <p>Sunset: {new Date(weather.sys.sunset * 1000).toLocaleTimeString()}</p>
         </div>
       )}
       {hourlyForecast.length > 0 && (
@@ -182,12 +192,17 @@ function CurrentWeather() {
           <WeatherRadar lat={location.lat} lon={location.lon} />
         </>
       )}
-      {historicalData && (
+      {historicalData.length > 0 && (
         <div className="historical-data">
           <h2>Historical Data</h2>
-          <p>Temperature: {Math.round(historicalData.current.temp)}°{units === 'imperial' ? 'F' : 'C'}</p>
-          <p>Humidity: {Math.round(historicalData.current.humidity)}%</p>
-          <p>Pressure: {Math.round(historicalData.current.pressure)} hPa</p>
+          {historicalData.map((data, index) => (
+            <div key={index} className="historical-card">
+              <p>Date: {new Date(data.dt * 1000).toLocaleDateString()}</p>
+              <p>Temperature: {Math.round(data.temp)}°{units === 'imperial' ? 'F' : 'C'}</p>
+              <p>Humidity: {Math.round(data.humidity)}%</p>
+              <p>Pressure: {Math.round(data.pressure)} hPa</p>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -195,6 +210,7 @@ function CurrentWeather() {
 }
 
 export default CurrentWeather;
+
 
 
 
