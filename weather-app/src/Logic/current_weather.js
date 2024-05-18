@@ -192,19 +192,6 @@ function CurrentWeather() {
           <WeatherRadar lat={location.lat} lon={location.lon} />
         </>
       )}
-      {historicalData.length > 0 && (
-        <div className="historical-data">
-          <h2>Historical Data</h2>
-          {historicalData.map((data, index) => (
-            <div key={index} className="historical-card">
-              <p>Date: {new Date(data.dt * 1000).toLocaleDateString()}</p>
-              <p>Temperature: {Math.round(data.temp)}°{units === 'imperial' ? 'F' : 'C'}</p>
-              <p>Humidity: {Math.round(data.humidity)}%</p>
-              <p>Pressure: {Math.round(data.pressure)} hPa</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
 }
