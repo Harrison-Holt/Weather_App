@@ -5,35 +5,16 @@ import './current_weather.css';
 
 const WEATHER_API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
-const weatherLayers = [
-  { value: 'PAC0', label: 'Convective precipitation' },
-  { value: 'PR0', label: 'Precipitation intensity' },
-  { value: 'PA0', label: 'Accumulated precipitation' },
-  { value: 'PAR0', label: 'Accumulated precipitation - rain' },
-  { value: 'PAS0', label: 'Accumulated precipitation - snow' },
-  { value: 'SD0', label: 'Depth of snow' },
-  { value: 'WS10', label: 'Wind speed at 10 meters' },
-  { value: 'WND', label: 'Wind direction and speed' },
-  { value: 'APM', label: 'Atmospheric pressure' },
-  { value: 'TA2', label: 'Air temperature at 2 meters' },
-  { value: 'TD2', label: 'Dew point temperature' },
-  { value: 'TS0', label: 'Soil temperature 0-10 cm' },
-  { value: 'TS10', label: 'Soil temperature >10 cm' },
-  { value: 'HRD0', label: 'Relative humidity' },
-  { value: 'CL', label: 'Cloudiness' },
-];
-
 function CurrentWeather() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [hourlyForecast, setHourlyForecast] = useState([]);
   const [historicalData, setHistoricalData] = useState([]);
+  const [showHistoricalData, setShowHistoricalData] = useState(false);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
   const [units, setUnits] = useState('imperial');
-  const [layerType, setLayerType] = useState('TA2');
-  const [date, setDate] = useState(null);
 
   useEffect(() => {
     if ("geolocation" in navigator) {
@@ -149,6 +130,10 @@ function CurrentWeather() {
 
   const getWeatherIcon = (icon) => `https://openweathermap.org/img/wn/${icon}@2x.png`;
 
+  const handleToggleHistoricalData = () => {
+    setShowHistoricalData(!showHistoricalData);
+  };
+
   return (
     <div className="weather-container">
       <h1>Weather App</h1>
@@ -165,20 +150,6 @@ function CurrentWeather() {
       <button onClick={toggleUnits} className="unit-toggle-button">
         Toggle Units ({units === 'imperial' ? 'Fahrenheit' : 'Celsius'})
       </button>
-      <div className="layer-select">
-        <label htmlFor="layerType">Select Layer: </label>
-        <select
-          id="layerType"
-          value={layerType}
-          onChange={(e) => setLayerType(e.target.value)}
-        >
-          {weatherLayers.map((layer) => (
-            <option key={layer.value} value={layer.value}>
-              {layer.label}
-            </option>
-          ))}
-        </select>
-      </div>
       {error && <div className="error-message">Error: {error}</div>}
       {weather && (
         <div className="current-weather">
@@ -224,9 +195,12 @@ function CurrentWeather() {
         </div>
       )}
       {location.lat && location.lon && (
-        <WeatherRadar lat={location.lat} lon={location.lon} type={layerType} date={date} />
+        <WeatherRadar lat={location.lat} lon={location.lon} initialType='TA2' date={date} />
       )}
-      {historicalData.length > 0 && (
+      <button onClick={handleToggleHistoricalData} className="unit-toggle-button">
+        {showHistoricalData ? 'Hide Historical Data' : 'Show Historical Data'}
+      </button>
+      {showHistoricalData && historicalData.length > 0 && (
         <div className="historical-data">
           <h2>Historical Data</h2>
           <div className="historical-cards">
