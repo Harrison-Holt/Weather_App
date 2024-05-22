@@ -5,7 +5,7 @@ function Header() {
     return (
         <header>
             <p>Weather App</p>
-            <a href='https://personal-blog-website-kappa.vercel.app/'>Homepage</a>
+            <a href='https://www.harrisonholt.dev/'>Homepage</a>
         </header>
     ); 
 }; 
