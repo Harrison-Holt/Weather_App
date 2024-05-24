@@ -52,6 +52,31 @@ function CurrentWeather() {
     fetchWeatherByCity(city);
   };
 
+    // Define the getWeatherIcon function
+    const getWeatherIcon = (icon) => {
+      return `https://openweathermap.org/img/wn/${icon}@2x.png`;
+    };
+  
+    // Define the convertTemperature function
+    const convertTemperature = (tempKelvin) => {
+      if (units === 'imperial') {
+        return (tempKelvin - 273.15) * 9 / 5 + 32; // Convert to Fahrenheit
+      } else {
+        return tempKelvin - 273.15; // Convert to Celsius
+      }
+    };
+  
+  const fetchHistoricalData = async (lat, lon) => {
+  try {
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${Math.floor(Date.now() / 1000) - 86400}&appid=${WEATHER_API_KEY}`
+    );
+    setHistoricalData(response.data.hourly); // Assuming hourly historical data
+  } catch (err) {
+    setError('Error fetching historical data: ' + err.message);
+  }
+};
+
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       const responses = await Promise.all([
