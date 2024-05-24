@@ -9,8 +9,6 @@ function CurrentWeather() {
   const [weather, setWeather] = useState(null);
   const [forecast, setForecast] = useState([]);
   const [hourlyForecast, setHourlyForecast] = useState([]);
-  const [historicalData, setHistoricalData] = useState([]);
-  const [showHistoricalData, setShowHistoricalData] = useState(false);
   const [error, setError] = useState(null);
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
@@ -39,7 +37,6 @@ function CurrentWeather() {
   useEffect(() => {
     if (location.lat && location.lon && !city) { // Only fetch by coords if city isn't being used
       fetchWeatherByCoords(location.lat, location.lon);
-      fetchHistoricalData(location.lat, location.lon);
     }
   }, [location, units]);
 
@@ -105,10 +102,6 @@ function CurrentWeather() {
     setUnits(prevUnits => prevUnits === 'imperial' ? 'metric' : 'imperial');
   };
 
-  const handleToggleHistoricalData = () => {
-    setShowHistoricalData(prevShow => !prevShow);
-  };
-  
    return (
     <div className="weather-container">
       <h1>Weather App</h1>
