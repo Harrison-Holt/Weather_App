@@ -66,17 +66,6 @@ function CurrentWeather() {
       }
     };
   
-  const fetchHistoricalData = async (lat, lon) => {
-  try {
-    const response = await axios.get(
-      `https://api.openweathermap.org/data/2.5/onecall/timemachine?lat=${lat}&lon=${lon}&dt=${Math.floor(Date.now() / 1000) - 86400}&appid=${WEATHER_API_KEY}`
-    );
-    setHistoricalData(response.data.hourly); // Assuming hourly historical data
-  } catch (err) {
-    setError('Error fetching historical data: ' + err.message);
-  }
-};
-
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       const responses = await Promise.all([
