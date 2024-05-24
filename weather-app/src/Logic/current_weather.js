@@ -120,7 +120,7 @@ function CurrentWeather() {
     setShowHistoricalData(prevShow => !prevShow);
   };
   
-  return (
+   return (
     <div className="weather-container">
       <h1>Weather App</h1>
       <form onSubmit={handleCitySubmit} className="weather-form">
@@ -182,26 +182,6 @@ function CurrentWeather() {
       )}
       {location.lat && location.lon && (
         <WeatherRadar lat={location.lat} lon={location.lon} initialType={layerType} />
-      )}
-      <button onClick={handleToggleHistoricalData} className="unit-toggle-button">
-        {showHistoricalData ? 'Hide Historical Data' : 'Show Historical Data'}
-      </button>
-      {showHistoricalData && historicalData.length > 0 && (
-        <div className="historical-data">
-          <h2>Historical Data</h2>
-          <div className="historical-cards">
-            {historicalData.map((data, index) => (
-              <div key={index} className="historical-card">
-                <p>Month: {data.month}</p>
-                <p>Day: {data.day}</p>
-                <p>Mean Temp: {Math.round(convertTemperature(data.temp.mean))}°{units === 'imperial' ? 'F' : 'C'}</p>
-                <p>Record Min Temp: {Math.round(convertTemperature(data.temp.record_min))}°{units === 'imperial' ? 'F' : 'C'}</p>
-                <p>Record Max Temp: {Math.round(convertTemperature(data.temp.record_max))}°{units === 'imperial' ? 'F' : 'C'}</p>
-                <p>Mean Humidity: {data.humidity.mean}%</p>
-              </div>
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );
