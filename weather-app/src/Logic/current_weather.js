@@ -15,12 +15,17 @@ function CurrentWeather() {
   const [city, setCity] = useState('');
   const [location, setLocation] = useState({ lat: null, lon: null });
   const [units, setUnits] = useState('imperial');
+  const [layerType, setLayerType] = useState('TA2');
 
   useEffect(() => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setLocation({ lat: position.coords.latitude, lon: position.coords.longitude });
+          const { latitude, longitude } = position.coords;
+          // Set location only if city is not specified to avoid loop
+          if (!city) {
+            setLocation({ lat: latitude, lon: longitude });
+          }
         },
         (error) => {
           setError("Error getting location: " + error.message);
@@ -29,36 +34,34 @@ function CurrentWeather() {
     } else {
       setError("Geolocation is not available");
     }
-  }, []);
+  }, [city]); // Depend on city to avoid resetting location when a city is entered
 
   useEffect(() => {
-    if (location.lat && location.lon) {
+    if (location.lat && location.lon && !city) { // Only fetch by coords if city isn't being used
       fetchWeatherByCoords(location.lat, location.lon);
+      fetchHistoricalData(location.lat, location.lon);
     }
   }, [location, units]);
 
-  const handleCityChange = event => {
+  const handleCityChange = (event) => {
     setCity(event.target.value);
   };
 
-  const handleCitySubmit = event => {
+  const handleCitySubmit = (event) => {
     event.preventDefault();
     fetchWeatherByCity(city);
   };
 
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
-      const weatherUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`;
-      const forecastUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,alerts&units=${units}&appid=${WEATHER_API_KEY}`;
-      
-      const [weatherResponse, forecastResponse] = await Promise.all([
-        axios.get(weatherUrl),
-        axios.get(forecastUrl)
+      const responses = await Promise.all([
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
       ]);
-
-      setWeather(weatherResponse.data);
-      setForecast(forecastResponse.data.daily);
-      setHourlyForecast(forecastResponse.data.hourly);
+      setWeather(responses[0].data);
+      setForecast(responses[1].data.list);
+      setHourlyForecast(responses[2].data.list);
       setError(null);
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
@@ -70,10 +73,12 @@ function CurrentWeather() {
 
   const fetchWeatherByCity = async (cityName) => {
     try {
-      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=${units}&appid=${WEATHER_API_KEY}`;
-      const response = await axios.get(url);
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=${units}&appid=${WEATHER_API_KEY}`
+      );
+      setWeather(response.data);
       const { lat, lon } = response.data.coord;
-      fetchWeatherByCoords(lat, lon);
+      setLocation({ lat, lon }); // Update location to fetched city's coordinates
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null);
