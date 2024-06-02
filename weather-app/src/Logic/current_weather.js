@@ -52,19 +52,11 @@ function CurrentWeather() {
     return `https://openweathermap.org/img/wn/${icon}@2x.png`;
   };
 
-  const convertTemperature = (tempKelvin) => {
-    if (units === 'imperial') {
-      return (tempKelvin - 273.15) * 9 / 5 + 32;
-    } else {
-      return tempKelvin - 273.15;
-    }
-  };
-
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       const responses = await Promise.all([
         axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`),
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&cnt=10&appid=${WEATHER_API_KEY}`),
         axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
       ]);
       setWeather(responses[0].data);
@@ -81,7 +73,7 @@ function CurrentWeather() {
 
   const fetchWeatherByCity = async (cityName) => {
     try {
-      const encodedCityName = encodeURIComponent(cityName);
+      const encodedCityName = encodeURIComponent(cityName.trim());
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${encodedCityName}&units=${units}&appid=${WEATHER_API_KEY}`
       );
