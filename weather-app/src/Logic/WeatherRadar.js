@@ -23,16 +23,10 @@ const weatherLayers = [
 const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
   const mapContainerRef = useRef(null);
   const [type, setType] = useState(initialType);
-  const mapRef = useRef(null);
 
   useEffect(() => {
     if (lat && lon) {
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
-
       const map = L.map(mapContainerRef.current).setView([lat, lon], 10);
-      mapRef.current = map;
 
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
@@ -46,12 +40,13 @@ const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
 
       return () => {
         map.remove();
+        weatherLayer.remove();
       };
     }
   }, [lat, lon, type]);
 
   return (
-    <div className="map-container" style={{ width: '100%', height: '500px' }}>
+    <div className="map-container">
       <div className="map-layer-select">
         <label htmlFor="layerType">Select Layer: </label>
         <select
