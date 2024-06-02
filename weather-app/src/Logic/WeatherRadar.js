@@ -22,29 +22,31 @@ const weatherLayers = [
 
 const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
   const mapContainerRef = useRef(null);
-  const mapRef = useRef(null);
-  const weatherLayerRef = useRef(null);
   const [type, setType] = useState(initialType);
+  const mapRef = useRef(null);
 
   useEffect(() => {
     if (lat && lon) {
-      if (!mapRef.current) {
-        mapRef.current = L.map(mapContainerRef.current).setView([lat, lon], 10);
-
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(mapRef.current);
+      if (mapRef.current) {
+        mapRef.current.remove();
       }
+
+      const map = L.map(mapContainerRef.current).setView([lat, lon], 10);
+      mapRef.current = map;
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
 
       const weatherLayerUrl = `http://maps.openweathermap.org/maps/2.0/weather/${type}/{z}/{x}/{y}?appid=${process.env.REACT_APP_WEATHER_API_KEY}&opacity=0.5`;
 
-      if (weatherLayerRef.current) {
-        mapRef.current.removeLayer(weatherLayerRef.current);
-      }
-
-      weatherLayerRef.current = L.tileLayer(weatherLayerUrl, {
+      const weatherLayer = L.tileLayer(weatherLayerUrl, {
         attribution: '&copy; OpenWeatherMap'
-      }).addTo(mapRef.current);
+      }).addTo(map);
+
+      return () => {
+        map.remove();
+      };
     }
   }, [lat, lon, type]);
 
@@ -70,4 +72,3 @@ const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
 };
 
 export default WeatherRadar;
-
