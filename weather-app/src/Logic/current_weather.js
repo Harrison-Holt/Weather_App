@@ -52,16 +52,24 @@ function CurrentWeather() {
     return `https://openweathermap.org/img/wn/${icon}@2x.png`;
   };
 
+  const convertTemperature = (tempKelvin) => {
+    if (units === 'imperial') {
+      return (tempKelvin - 273.15) * 9 / 5 + 32;
+    } else {
+      return tempKelvin - 273.15;
+    }
+  };
+
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       const responses = await Promise.all([
         axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`),
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=${units}&cnt=10&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
         axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
       ]);
       setWeather(responses[0].data);
-      setForecast(responses[1].data.list || []);
-      setHourlyForecast(responses[2].data.list || []);
+      setForecast(responses[1].data.list);
+      setHourlyForecast(responses[2].data.list);
       setError(null);
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
@@ -73,7 +81,7 @@ function CurrentWeather() {
 
   const fetchWeatherByCity = async (cityName) => {
     try {
-      const encodedCityName = encodeURIComponent(cityName.trim());
+      const encodedCityName = encodeURIComponent(cityName);
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?q=${encodedCityName}&units=${units}&appid=${WEATHER_API_KEY}`
       );
@@ -92,11 +100,11 @@ function CurrentWeather() {
   const fetchForecast = async (lat, lon) => {
     try {
       const responses = await Promise.all([
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
         axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
       ]);
-      setForecast(responses[0].data.list || []);
-      setHourlyForecast(responses[1].data.list || []);
+      setForecast(responses[0].data.list);
+      setHourlyForecast(responses[1].data.list);
     } catch (err) {
       setError('Error fetching forecast data: ' + err.message);
     }
@@ -159,7 +167,7 @@ function CurrentWeather() {
               <div key={index} className="forecast-card">
                 <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
                 <img src={getWeatherIcon(day.weather[0].icon)} alt={day.weather[0].description} />
-                <p>Temp: {day.temp ? Math.round(day.temp.day) : 'N/A'}°{units === 'imperial' ? 'F' : 'C'}</p>
+                <p>Temp: {Math.round(day.temp.day)}°{units === 'imperial' ? 'F' : 'C'}</p>
                 <p>{day.weather[0].description}</p>
               </div>
             ))}
