@@ -20,7 +20,6 @@ function CurrentWeather() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          // Set location only if city is not specified to avoid loop
           if (!city) {
             setLocation({ lat: latitude, lon: longitude });
           }
@@ -32,10 +31,10 @@ function CurrentWeather() {
     } else {
       setError("Geolocation is not available");
     }
-  }, [city]); // Depend on city to avoid resetting location when a city is entered
+  }, [city]);
 
   useEffect(() => {
-    if (location.lat && location.lon && !city) { // Only fetch by coords if city isn't being used
+    if (location.lat && location.lon && !city) {
       fetchWeatherByCoords(location.lat, location.lon);
     }
   }, [location, units]);
@@ -49,20 +48,18 @@ function CurrentWeather() {
     fetchWeatherByCity(city);
   };
 
-    // Define the getWeatherIcon function
-    const getWeatherIcon = (icon) => {
-      return `https://openweathermap.org/img/wn/${icon}@2x.png`;
-    };
-  
-    // Define the convertTemperature function
-    const convertTemperature = (tempKelvin) => {
-      if (units === 'imperial') {
-        return (tempKelvin - 273.15) * 9 / 5 + 32; // Convert to Fahrenheit
-      } else {
-        return tempKelvin - 273.15; // Convert to Celsius
-      }
-    };
-  
+  const getWeatherIcon = (icon) => {
+    return `https://openweathermap.org/img/wn/${icon}@2x.png`;
+  };
+
+  const convertTemperature = (tempKelvin) => {
+    if (units === 'imperial') {
+      return (tempKelvin - 273.15) * 9 / 5 + 32;
+    } else {
+      return tempKelvin - 273.15;
+    }
+  };
+
   const fetchWeatherByCoords = async (lat, lon) => {
     try {
       const responses = await Promise.all([
@@ -84,12 +81,14 @@ function CurrentWeather() {
 
   const fetchWeatherByCity = async (cityName) => {
     try {
+      const encodedCityName = encodeURIComponent(cityName);
       const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=${units}&appid=${WEATHER_API_KEY}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${encodedCityName}&units=${units}&appid=${WEATHER_API_KEY}`
       );
       setWeather(response.data);
       const { lat, lon } = response.data.coord;
-      setLocation({ lat, lon }); // Update location to fetched city's coordinates
+      setLocation({ lat, lon });
+      fetchForecast(lat, lon);
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
       setWeather(null);
@@ -98,11 +97,24 @@ function CurrentWeather() {
     }
   };
 
+  const fetchForecast = async (lat, lon) => {
+    try {
+      const responses = await Promise.all([
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
+      ]);
+      setForecast(responses[0].data.list);
+      setHourlyForecast(responses[1].data.list);
+    } catch (err) {
+      setError('Error fetching forecast data: ' + err.message);
+    }
+  };
+
   const toggleUnits = () => {
     setUnits(prevUnits => prevUnits === 'imperial' ? 'metric' : 'imperial');
   };
 
-   return (
+  return (
     <div className="weather-container">
       <h1>Weather App</h1>
       <form onSubmit={handleCitySubmit} className="weather-form">
@@ -168,6 +180,9 @@ function CurrentWeather() {
     </div>
   );
 }
+
+export default CurrentWeather;
+
 
 export default CurrentWeather;
   
