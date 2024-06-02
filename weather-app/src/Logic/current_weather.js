@@ -60,8 +60,8 @@ function CurrentWeather() {
         axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
       ]);
       setWeather(responses[0].data);
-      setForecast(responses[1].data.list);
-      setHourlyForecast(responses[2].data.list);
+      setForecast(responses[1].data.list || []);
+      setHourlyForecast(responses[2].data.list || []);
       setError(null);
     } catch (err) {
       setError('Error fetching weather data: ' + err.message);
@@ -92,11 +92,11 @@ function CurrentWeather() {
   const fetchForecast = async (lat, lon) => {
     try {
       const responses = await Promise.all([
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast/daily?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&cnt=10&units=${units}&appid=${WEATHER_API_KEY}`),
         axios.get(`https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&units=${units}&appid=${WEATHER_API_KEY}`)
       ]);
-      setForecast(responses[0].data.list);
-      setHourlyForecast(responses[1].data.list);
+      setForecast(responses[0].data.list || []);
+      setHourlyForecast(responses[1].data.list || []);
     } catch (err) {
       setError('Error fetching forecast data: ' + err.message);
     }
