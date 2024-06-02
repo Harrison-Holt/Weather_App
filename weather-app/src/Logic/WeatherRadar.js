@@ -22,31 +22,34 @@ const weatherLayers = [
 
 const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
   const mapContainerRef = useRef(null);
+  const mapRef = useRef(null);
+  const weatherLayerRef = useRef(null);
   const [type, setType] = useState(initialType);
 
   useEffect(() => {
     if (lat && lon) {
-      const map = L.map(mapContainerRef.current).setView([lat, lon], 10);
+      if (!mapRef.current) {
+        mapRef.current = L.map(mapContainerRef.current).setView([lat, lon], 10);
 
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; OpenStreetMap contributors'
-      }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(mapRef.current);
+      }
 
       const weatherLayerUrl = `http://maps.openweathermap.org/maps/2.0/weather/${type}/{z}/{x}/{y}?appid=${process.env.REACT_APP_WEATHER_API_KEY}&opacity=0.5`;
 
-      const weatherLayer = L.tileLayer(weatherLayerUrl, {
-        attribution: '&copy; OpenWeatherMap'
-      }).addTo(map);
+      if (weatherLayerRef.current) {
+        mapRef.current.removeLayer(weatherLayerRef.current);
+      }
 
-      return () => {
-        map.remove();
-        weatherLayer.remove();
-      };
+      weatherLayerRef.current = L.tileLayer(weatherLayerUrl, {
+        attribution: '&copy; OpenWeatherMap'
+      }).addTo(mapRef.current);
     }
   }, [lat, lon, type]);
 
   return (
-    <div className="map-container">
+    <div className="map-container" style={{ width: '100%', height: '500px' }}>
       <div className="map-layer-select">
         <label htmlFor="layerType">Select Layer: </label>
         <select
@@ -67,6 +70,4 @@ const WeatherRadar = ({ lat, lon, initialType = 'TA2' }) => {
 };
 
 export default WeatherRadar;
-
-
 
