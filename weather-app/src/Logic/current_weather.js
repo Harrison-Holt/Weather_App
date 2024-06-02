@@ -140,8 +140,6 @@ function CurrentWeather() {
           <p>Humidity: {Math.round(weather.main.humidity)}%</p>
           <p>Pressure: {Math.round(weather.main.pressure)} hPa</p>
           <p>Wind Speed: {Math.round(weather.wind.speed)} {units === 'imperial' ? 'mph' : 'm/s'}</p>
-          <p>Sunrise: {new Date(weather.sys.sunrise * 1000).toLocaleTimeString()}</p>
-          <p>Sunset: {new Date(weather.sys.sunset * 1000).toLocaleTimeString()}</p>
         </div>
       )}
       {hourlyForecast.length > 0 && (
