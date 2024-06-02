@@ -182,7 +182,3 @@ function CurrentWeather() {
 }
 
 export default CurrentWeather;
-
-
-export default CurrentWeather;
-  
