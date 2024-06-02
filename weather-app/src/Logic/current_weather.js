@@ -159,7 +159,7 @@ function CurrentWeather() {
               <div key={index} className="forecast-card">
                 <p>{new Date(day.dt * 1000).toLocaleDateString()}</p>
                 <img src={getWeatherIcon(day.weather[0].icon)} alt={day.weather[0].description} />
-                <p>Temp: {Math.round(day.temp.day)}°{units === 'imperial' ? 'F' : 'C'}</p>
+                <p>Temp: {day.temp ? Math.round(day.temp.day) : 'N/A'}°{units === 'imperial' ? 'F' : 'C'}</p>
                 <p>{day.weather[0].description}</p>
               </div>
             ))}
