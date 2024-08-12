@@ -14,7 +14,7 @@
 }
 
 /* Header Styles */
-.header {
+.footer-header {
     margin-right: 20px;
     font-size: 24px;
 }
@@ -36,4 +36,3 @@
 .email-icon {
     margin-right: 0;
 }
-
