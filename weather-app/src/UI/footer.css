@@ -3,12 +3,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15px;
     background-color: #287E8B;
     color: black;
     text-align: center;
-    left: 0;
-    bottom: 0;
     width: 100%;
     overflow-x: hidden;
 }
