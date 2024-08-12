@@ -1,3 +1,25 @@
+/* Footer Styles */
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background-color: #4a76a8;
+    color: black;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Header Styles */
+.header {
+    margin-right: 20px;
+    font-size: 24px;
+}
+
+/* Icon Link Styles */
 .icon-link {
     font-size: 24px;
     text-decoration: none;
@@ -5,11 +27,13 @@
     margin-right: 20px;
 }
 
-.icon-link:hover  {
+.icon-link:hover {
     color: white;
     transform: scale(1.1);
 }
 
+/* Email Icon Specific Style */
 .email-icon {
     margin-right: 0;
 }
+
