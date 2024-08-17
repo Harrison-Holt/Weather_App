@@ -116,7 +116,6 @@ function CurrentWeather() {
 
   return (
     <div className="weather-container">
-      <h1>Weather App</h1>
       <form onSubmit={handleCitySubmit} className="weather-form">
       <label htmlFor="city">Enter City:</label>
         <input
