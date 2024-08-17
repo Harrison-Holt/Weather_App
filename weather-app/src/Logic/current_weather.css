@@ -9,7 +9,12 @@
 .weather-container h1 {
   color: black; 
 }
-  
+
+label {
+  font-size: 36px; 
+  font-family: 'Merriweather'; 
+  margin: 15px; 
+}
   .current-weather, .hourly-forecast, .forecast, .historical-data {
     background: #ffffff;
     border-radius: 10px;
