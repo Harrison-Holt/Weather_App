@@ -99,7 +99,7 @@
     border: none;
     border-radius: 5px;
     background-color: #4caf50;
-    color: white;
+    color: #000;
     cursor: pointer;
     transition: background-color 0.3s ease;
   }
