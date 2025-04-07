@@ -1,0 +1,28 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo Installing Dependencies.......
+      - cd weather-app
+      - npm ci 
+
+  build:
+    commands:
+      - npm run build
+
+  post_build:
+    commands:
+      - echo Uploading To S3 Bucket......
+      - aws s3 sync build/ s3://weather-app-frontend-stack-weatherappbucket-tuodlubjv --delete
+      - echo Invalidating CloudFront cache....
+      - aws cloudfront create-invalidation --distribution-id E11S9UVZK4DC79 --paths "/*"
+
+artifacts:
+  files:
+    - '**/*'
+
+  base-directory: weather-app/build 
+

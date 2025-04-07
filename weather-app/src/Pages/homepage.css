@@ -1,0 +1,21 @@
+/* Ensure the entire main section covers the viewport height and centers content */
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #f4f4f9;
+    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+  }
+
+  
+  /* Style the main header */
+  main h1 {
+    text-align: center;
+    font-size: 3rem; /* Make the header larger */
+    margin: 0 0 20px 0; /* Add space below the header */
+    color: #ffffff;
+    font-family: 'Arial', sans-serif; /* Change font for better readability */
+  }
+
