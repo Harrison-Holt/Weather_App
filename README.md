@@ -78,8 +78,6 @@ npm run dev
 ```bash
 http://localhost:5173/
 ```
----
-
 ## Final Notes ✨
 
 This project was built as a supporting portfolio piece to demonstrate React fundamentals, API integration, and UI design using Material-UI.  
