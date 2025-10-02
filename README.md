@@ -84,6 +84,3 @@ This project was built as a supporting portfolio piece to demonstrate React fund
 
 It reflects my growth as a developer — from managing state and effects, to breaking components into smaller parts, to adding persistence with localStorage.  
 I’m proud of how far this app has come, and I look forward to continuing to refine my skills with larger projects and more advanced concepts like TypeScript and Next.js. 🚀
-
-http://localhost:5173/
-
