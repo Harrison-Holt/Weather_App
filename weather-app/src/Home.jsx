@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useContext } from "react";
+import { WeatherContext } from "./Context/WeatherContext";
 import Footer from "./UI/Footer";
 import Header from "./UI/Header";
 import Form from "./Form";
@@ -8,17 +10,8 @@ import Forecast from "./Forecast";
 
 function Home() {
 
-
-    const [city, setCity] = useState(''); 
-    const [input, setInput] = useState(''); 
-    
-    const [weather, setWeather] = useState(() => {
-        const weather_report = localStorage.getItem("weatherData"); 
-        return weather_report ? JSON.parse(weather_report) : null; 
-    }); 
-
-    const [error, setError] = useState(null); 
- 
+    const { city, weather, error, setCity, setWeather, setError } = useContext(WeatherContext); 
+    const [input, setInput] = useState('');  
 
     useEffect(() => {
         if(!city) return; 
@@ -74,7 +67,7 @@ function Home() {
     return (
         <>
         <Header />
-        <Container fullWidth={false} sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <Container maxWidth={false} sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'center' }}>
 
             <Form value={input} onChange={handleFormChange} onSubmit={submitForm}/>
             <CurrentWeather error={error} weather={weather} />

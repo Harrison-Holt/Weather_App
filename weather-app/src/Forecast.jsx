@@ -1,6 +1,19 @@
 import { Typography, Card, Box } from "@mui/material";
+import { useContext } from "react";
+import { WeatherContext } from "./Context/WeatherContext";
 
-function Forecast({ weather }) {
+function Forecast() {
+
+    const { weather } = useContext(WeatherContext); 
+
+    if(!weather) {
+        return (
+            <>
+            <Typography variant="h6" sx={{ mt: 3 }}>No Forecast Availabile</Typography>
+            </>
+        )
+    }
+
     return (
         <>
             <Typography variant="h6" sx={{ textAlign: 'center', mb: 3 }}> 7 Day Forecast </Typography>
